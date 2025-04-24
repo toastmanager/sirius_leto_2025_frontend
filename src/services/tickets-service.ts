@@ -5,17 +5,17 @@ import { Ticket } from "../lib/types/tickets/ticket";
 
 class TicketsService {
   async createTicket(input: CreateTicketInput) {
-    const ticket: Ticket = (await api.post("tickets", input)).data;
+    const ticket: Ticket = (await api.post("tickets/", input)).data;
     return ticket;
   }
 
   async getTickets(): Promise<PaginatedTickets> {
-    const tickets: PaginatedTickets = (await api.get(`tickets`)).data;
+    const tickets: PaginatedTickets = (await api.get(`tickets/`)).data;
     return tickets;
   }
 
   async getTicketDetails(id: number): Promise<Ticket> {
-    const ticket: Ticket = (await api.get(`tickets/${id}`)).data;
+    const ticket: Ticket = (await api.get(`tickets/${id}/`)).data;
     return ticket;
   }
 }
