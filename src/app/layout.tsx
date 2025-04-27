@@ -6,6 +6,8 @@ import { AuthProvider } from "../components/layout/auth-provider";
 const onest = Onest({
   variable: "--font-onest",
   subsets: ["latin", "cyrillic"],
+  display: 'swap',
+  fallback: ['system-ui', 'Arial']
 });
 
 export const metadata: Metadata = {
