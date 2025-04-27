@@ -1,9 +1,13 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useRegisterFormStore } from "../../../providers/register-form-store-provider";
+import { useAuth } from "../../../context/auth-context";
 
 export default function VerifyEmail() {
   const router = useRouter();
+  const { formData } = useRegisterFormStore((state) => state);
+  const { register, login } = useAuth();
   const email = useSearchParams().get("email");
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +39,16 @@ export default function VerifyEmail() {
 
       const fullCode = code.join("");
       if (fullCode.length !== 6) throw new Error("Введите полный код");
+
+      await register({
+        fullName: formData.name,
+        email: formData.email,
+        password: formData.password,
+      });
+      await login({
+        email: formData.email,
+        password: formData.password,
+      });
 
       router.push("/dashboard");
     } catch (err) {

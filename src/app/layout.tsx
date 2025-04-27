@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import { Onest } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "../components/layout/auth-provider";
+import { RegisterFormStoreProvider } from "../providers/register-form-store-provider";
 
 const onest = Onest({
   variable: "--font-onest",
   subsets: ["latin", "cyrillic"],
-  display: 'swap',
-  fallback: ['system-ui', 'Arial']
+  display: "swap",
+  fallback: ["system-ui", "Arial"],
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={`${onest.variable} antialiased`}>
-        <AuthProvider>{children}</AuthProvider>
+        <RegisterFormStoreProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </RegisterFormStoreProvider>
       </body>
     </html>
   );
