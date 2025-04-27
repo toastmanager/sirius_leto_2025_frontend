@@ -42,17 +42,6 @@ export default function Register() {
         throw new Error("Выберите регион и город");
       }
 
-      const res = await fetch("/api/send-verification-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Ошибка регистрации");
-      }
-
       router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Неизвестная ошибка");
@@ -98,6 +87,7 @@ export default function Register() {
           <Input
             type="text"
             required
+            className="max-h-[36px]"
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           />
@@ -150,7 +140,7 @@ export default function Register() {
           <label className="block text-sm text-gray-600 mb-1">Регион</label>
           <select
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+            className="w-full px-3 py-2 border rounded-lg"
             value={formData.region}
             onChange={(e) =>
               setFormData({ ...formData, region: e.target.value })
@@ -170,7 +160,7 @@ export default function Register() {
           <select
             required
             disabled={!formData.region}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+            className="w-full px-3 py-2 border rounded-lg"
             value={formData.city}
             onChange={(e) => setFormData({ ...formData, city: e.target.value })}
           >
@@ -219,8 +209,8 @@ export default function Register() {
         <Button
           type="submit"
           disabled={isLoading}
-          className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
-            isLoading ? "bg-gray-400" : "bg-primary hover:bg-blue-500"
+          className={`w-full py-3 px-4 rounded-lg font-medium ${
+            isLoading ? "bg-gray-400" : "bg-primary"
           }`}
         >
           {isLoading ? "Регистрация..." : "Зарегистрироваться"}
