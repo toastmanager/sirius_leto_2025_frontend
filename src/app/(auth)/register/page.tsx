@@ -5,10 +5,12 @@ import Link from "next/link";
 import { regions, getCitiesByRegion } from "@/lib/regions-data";
 import { Input } from "../../../components/input";
 import { Button } from "../../../components/ui/button";
+import { useRegisterFormStore } from "../../../providers/register-form-store-provider";
 
 export default function Register() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const { setFormData } = useRegisterFormStore((state) => state);
+  const [localFormData, setLocalFormData] = useState({
     name: "",
     birthDate: "",
     email: "",
@@ -23,11 +25,11 @@ export default function Register() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (formData.region) {
-      setAvailableCities(getCitiesByRegion(formData.region));
-      setFormData((prev) => ({ ...prev, city: "" }));
+    if (localFormData.region) {
+      setAvailableCities(getCitiesByRegion(localFormData.region));
+      setLocalFormData((prev) => ({ ...prev, city: "" }));
     }
-  }, [formData.region]);
+  }, [localFormData.region]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -35,25 +37,20 @@ export default function Register() {
     setError("");
 
     try {
-      if (formData.password !== formData.confirmPassword) {
+      if (localFormData.password !== localFormData.confirmPassword) {
         throw new Error("Пароли не совпадают");
       }
-      if (!formData.region || !formData.city) {
+      if (!localFormData.region || !localFormData.city) {
         throw new Error("Выберите регион и город");
       }
 
-      const res = await fetch("/api/send-verification-code", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+      const { confirmPassword, ...formData } = localFormData;
+      setFormData({
+        formData: formData,
       });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Ошибка регистрации");
-      }
-
-      router.push(`/verify-email?email=${encodeURIComponent(formData.email)}`);
+      router.push(
+        `/verify-email?email=${encodeURIComponent(localFormData.email)}`
+      );
     } catch (err) {
       setError(err instanceof Error ? err.message : "Неизвестная ошибка");
     } finally {
@@ -98,8 +95,11 @@ export default function Register() {
           <Input
             type="text"
             required
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            className="max-h-[36px]"
+            value={localFormData.name}
+            onChange={(e) =>
+              setLocalFormData({ ...localFormData, name: e.target.value })
+            }
           />
         </div>
 
@@ -111,9 +111,9 @@ export default function Register() {
             type="date"
             required
             className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-            value={formData.birthDate}
+            value={localFormData.birthDate}
             onChange={(e) =>
-              setFormData({ ...formData, birthDate: e.target.value })
+              setLocalFormData({ ...localFormData, birthDate: e.target.value })
             }
           />
         </div>
@@ -125,9 +125,9 @@ export default function Register() {
           <Input
             type="email"
             required
-            value={formData.email}
+            value={localFormData.email}
             onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
+              setLocalFormData({ ...localFormData, email: e.target.value })
             }
           />
         </div>
@@ -139,9 +139,9 @@ export default function Register() {
           <Input
             type="tel"
             required
-            value={formData.phone}
+            value={localFormData.phone}
             onChange={(e) =>
-              setFormData({ ...formData, phone: e.target.value })
+              setLocalFormData({ ...localFormData, phone: e.target.value })
             }
           />
         </div>
@@ -150,10 +150,10 @@ export default function Register() {
           <label className="block text-sm text-gray-600 mb-1">Регион</label>
           <select
             required
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
-            value={formData.region}
+            className="w-full px-3 py-2 border rounded-lg"
+            value={localFormData.region}
             onChange={(e) =>
-              setFormData({ ...formData, region: e.target.value })
+              setLocalFormData({ ...localFormData, region: e.target.value })
             }
           >
             <option value="">Выбрать</option>
@@ -169,13 +169,15 @@ export default function Register() {
           <label className="block text-sm text-gray-600 mb-1">Город</label>
           <select
             required
-            disabled={!formData.region}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
-            value={formData.city}
-            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+            disabled={!localFormData.region}
+            className="w-full px-3 py-2 border rounded-lg"
+            value={localFormData.city}
+            onChange={(e) =>
+              setLocalFormData({ ...localFormData, city: e.target.value })
+            }
           >
             <option value="">
-              {formData.region ? "Выбрать" : "Сначала выберите регион"}
+              {localFormData.region ? "Выбрать" : "Сначала выберите регион"}
             </option>
             {availableCities.map((city) => (
               <option key={city} value={city}>
@@ -191,9 +193,9 @@ export default function Register() {
             type="password"
             required
             minLength={6}
-            value={formData.password}
+            value={localFormData.password}
             onChange={(e) =>
-              setFormData({ ...formData, password: e.target.value })
+              setLocalFormData({ ...localFormData, password: e.target.value })
             }
           />
         </div>
@@ -205,9 +207,12 @@ export default function Register() {
           <Input
             type="password"
             required
-            value={formData.confirmPassword}
+            value={localFormData.confirmPassword}
             onChange={(e) =>
-              setFormData({ ...formData, confirmPassword: e.target.value })
+              setLocalFormData({
+                ...localFormData,
+                confirmPassword: e.target.value,
+              })
             }
           />
         </div>
@@ -219,8 +224,8 @@ export default function Register() {
         <Button
           type="submit"
           disabled={isLoading}
-          className={`w-full py-3 px-4 rounded-lg font-medium text-white ${
-            isLoading ? "bg-gray-400" : "bg-primary hover:bg-blue-500"
+          className={`w-full py-3 px-4 rounded-lg font-medium ${
+            isLoading ? "bg-gray-400" : "bg-primary"
           }`}
         >
           {isLoading ? "Регистрация..." : "Зарегистрироваться"}

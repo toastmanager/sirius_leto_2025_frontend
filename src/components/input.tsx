@@ -6,5 +6,11 @@ export const Input = ({
   type,
   ...props
 }: React.ComponentProps<"input">) => {
-  return <ShadcnInput className={twMerge("py-2", className)} {...props} />;
+  return (
+    <ShadcnInput
+      className={twMerge("py-2 border-border text-base shadow-none", className)}
+      type={type}
+      {...props}
+    />
+  );
 };
