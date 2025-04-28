@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { use, useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { Ticket } from "../../../lib/types/tickets/ticket";
 import ticketsService from "../../../services/tickets-service";
 import { cn } from "../../../lib/utils";
@@ -32,10 +32,14 @@ export default function RequestDetailPage({
 
   const fetchTicket = async () => {
     try {
-      setIsLoading(true);
-      const { id } = await params;
-      const ticketResponse = await ticketsService.getTicketDetails(Number(id));
-      setTicket(ticketResponse);
+      if (user) {
+        setIsLoading(true);
+        const { id } = await params;
+        const ticketResponse = await ticketsService.getTicketDetails(
+          Number(id)
+        );
+        setTicket(ticketResponse);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -43,9 +47,9 @@ export default function RequestDetailPage({
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetchTicket();
-  }, []);
+  }, [user]);
 
   return (
     <>
@@ -88,13 +92,12 @@ export default function RequestDetailPage({
             <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
             <div className="text-muted-foreground">
-              <div className="flex items-start">
-                <div className="flex items-center space-y-0.5">
-                  <p>{ticket.type.category.title}</p>
-                  <Icon icon={"solar:arrow-right-linear"} className="mx-1" />
-                  <p>{ticket.type.title}</p>
-                </div>
+              <div className="flex items-center space-x-1">
+                <p>{ticket.type.category.title}</p>
+                <Icon icon={"solar:arrow-right-linear"} className="" />
+                <p>{ticket.type.title}</p>
               </div>
+              <p>{ticket.address}</p>
             </div>
 
             <div className="pt-2">

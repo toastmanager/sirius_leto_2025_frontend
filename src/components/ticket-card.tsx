@@ -30,13 +30,12 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
           <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
           <div className="">
-            <div className="flex items-start">
-              <div className="flex items-center space-y-0.5">
-                <p>{ticket.type.category.title}</p>
-                <Icon icon={"solar:arrow-right-linear"} className="mx-1" />
-                <p>{ticket.type.title}</p>
-              </div>
+            <div className="flex items-center space-x-1">
+              <p>{ticket.type.category.title}</p>
+              <Icon icon={"solar:arrow-right-linear"} className="" />
+              <p>{ticket.type.title}</p>
             </div>
+            <p>{ticket.address}</p>
           </div>
         </div>
 

@@ -10,6 +10,7 @@ export type TicketStatus =
 export type Ticket = {
   id: number;
   title: string;
+  address: string;
   description: string;
   createdAt: string;
   latitude: number;
