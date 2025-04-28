@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Request } from '@/lib/types';
 import Image from 'next/image';
-import { ChevronRight } from 'lucide-react';
 
 export function RequestCard({ request }: { request: Request }) {
   const statusColors = {
