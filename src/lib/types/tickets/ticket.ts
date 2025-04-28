@@ -11,7 +11,7 @@ export type Ticket = {
   id: number;
   title: string;
   description: string;
-  created_at: Date;
+  createdAt: string;
   latitude: number;
   longitude: number;
   user: User;
