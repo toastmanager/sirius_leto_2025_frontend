@@ -104,9 +104,6 @@ export default function RequestDetailPage({
             </div>
           </div>
 
-          {
-            // TODO: Add real images
-          }
           <AspectRatio ratio={16 / 9}>
             <img
               src={ticket.image}

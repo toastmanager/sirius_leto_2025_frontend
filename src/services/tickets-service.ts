@@ -7,7 +7,29 @@ import { TicketCategoryWithTypes } from "../lib/types/tickets/ticket-category-wi
 
 class TicketsService {
   async createTicket(input: CreateTicketInput) {
-    const ticket: Ticket = (await api.post("tickets/", input)).data;
+    const formData = new FormData();
+
+    formData.append("latitude", input.latitude.toString());
+    formData.append("longitude", input.longitude.toString());
+    formData.append("title", input.title);
+    formData.append("address", input.address);
+    formData.append("typeId", input.typeId.toString());
+
+    if (input.description) {
+      formData.append("description", input.description);
+    }
+
+    if (input.image) {
+      formData.append("image", input.image);
+    }
+
+    const ticket: Ticket = (
+      await api.post("tickets/", input, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+    ).data;
     return ticket;
   }
 
