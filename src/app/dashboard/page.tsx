@@ -1,12 +1,14 @@
-import { Navbar } from '@/components/navbar';
-import { Button } from '@/components/ui/button';
+"use client";
+
+import dynamic from "next/dynamic";
+import { Navbar } from "@/components/navbar";
+
+const Map = dynamic(() => import("./map-component"), { ssr: false });
 
 export default function Dashboard() {
   return (
     <div className="pb-16">
-
-        {/* Место для карты */}
-
+      <Map />
       <Navbar />
     </div>
   );

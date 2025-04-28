@@ -1,3 +1,4 @@
+@import url("https://unpkg.com/leaflet@1.9.4/dist/leaflet.css");
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -130,11 +131,11 @@ body {
 }
 
 .image-overlay::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), transparent);
 }
