@@ -70,7 +70,7 @@ const CreateTicketPage = () => {
       typeId: types.find((type) => type.title === currentType)!.id,
     };
     const newTicket = await ticketsService.createTicket(data);
-    router.push(`/requests/${newTicket.id}`);
+    router.replace(`/requests/${newTicket.id}`);
   };
 
   return (
