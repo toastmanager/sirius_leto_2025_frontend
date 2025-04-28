@@ -25,32 +25,32 @@ export default function TicketsPage() {
   }, [user]);
 
   return (
-    <div className="pb-16">
-      <div className="py-4">
-        <h1 className="pl-4 text-xl font-bold mb-6 mt-2 ml-1">Мои заявки</h1>
-        {isLoading && (
-          <div className="flex h-[calc(100vh-160px)]">
-            <Spinner className="m-auto" />
-          </div>
-        )}
-        {!user ? (
-          <div className="flex h-[calc(100vh-160px)]">
-            <h1 className="m-auto font-medium">
-              Вы не авторизованы. Пожалуйста, войдите в аккаунт
-            </h1>
-          </div>
-        ) : (
-          <>
-            {ticketsList.map((ticket) => (
-              <div key={ticket.id}>
-                <TicketCard ticket={ticket} />
-                <Separator className="my-4" />
-              </div>
-            ))}
-          </>
-        )}
+    <>
+      <div className="border-b mb-4">
+        <h1 className="m-4 text-xl font-bold">Мои заявки</h1>
       </div>
+      {isLoading && (
+        <div className="flex h-[calc(100vh-160px)]">
+          <Spinner className="m-auto" />
+        </div>
+      )}
+      {!user ? (
+        <div className="flex h-[calc(100vh-160px)]">
+          <h1 className="m-auto font-medium">
+            Вы не авторизованы. Пожалуйста, войдите в аккаунт
+          </h1>
+        </div>
+      ) : (
+        <>
+          {ticketsList.map((ticket) => (
+            <div key={ticket.id}>
+              <TicketCard ticket={ticket} />
+              <Separator className="my-4" />
+            </div>
+          ))}
+        </>
+      )}
       <Navbar />
-    </div>
+    </>
   );
 }
