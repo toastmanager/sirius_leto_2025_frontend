@@ -2,9 +2,20 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useAuth } from "../context/auth-context";
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
+  const { isLoading, user, error } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !error && user) {
+      redirect("/dashboard");
+    }
+  }, [user]);
+
+  return !isLoading && !error && !user ? (
     <div className="flex flex-col items-center justify-center min-h-[917px] w-[412px] mx-auto bg-white p-6">
       <div className="mb-10 w-[120px] h-[120px] flex items-center justify-center">
         <Image src="/logo.svg" alt="Логотип" width={120} height={120} />
@@ -25,5 +36,7 @@ export default function Home() {
         Начать
       </Link>
     </div>
+  ) : (
+    <></>
   );
 }

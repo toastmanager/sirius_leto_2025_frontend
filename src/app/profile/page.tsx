@@ -4,9 +4,11 @@ import { Navbar } from "@/components/navbar";
 import { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "../../context/auth-context";
+import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
-  const { user, isLoading, logout } = useAuth();
+  const router = useRouter();
+  const { user, logout } = useAuth();
   const [activeItem, setActiveItem] = useState<string | null>(null);
 
   const toggleItem = (itemName: string) => {
@@ -28,7 +30,7 @@ export default function ProfilePage() {
           {/* <p className="text-gray-500 mb-1">15.04.1992</p> */}
           <p className="text-gray-500 mb-4">{user?.email}</p>
 
-          <button className="text-blue-500 font-medium">Редактировать</button>
+          {/* <button className="text-blue-500 font-medium">Редактировать</button> */}
         </div>
 
         <div className="border-t border-gray-200 pt-2">
@@ -71,7 +73,10 @@ export default function ProfilePage() {
 
           <button
             className="w-full py-4 text-left text-red-500 border-b border-gray-100 cursor-pointer"
-            onClick={logout}
+            onClick={() => {
+              logout();
+              router.push("/");
+            }}
           >
             Выйти из аккаунта
           </button>

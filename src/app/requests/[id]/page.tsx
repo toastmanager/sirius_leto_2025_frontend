@@ -109,9 +109,7 @@ export default function RequestDetailPage({
           }
           <AspectRatio ratio={16 / 9}>
             <img
-              src={
-                "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2ZJHCqvbwrYmln1iiTIkTJwC0atIVCccya2ucLRQCQByn_j7WBRha0auTDkt1I-SI-oy7gcEN63c6snfkcaXLqQ"
-              }
+              src={ticket.image}
               alt={`Фото заявки: ${ticket.title}`}
               className="object-cover w-full h-full"
             />
