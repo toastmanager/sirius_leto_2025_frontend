@@ -1,9 +1,8 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { use, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Ticket } from "../../../lib/types/tickets/ticket";
 import ticketsService from "../../../services/tickets-service";
 import { cn } from "../../../lib/utils";
@@ -118,7 +117,7 @@ export default function RequestDetailPage({
             />
           </AspectRatio>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
