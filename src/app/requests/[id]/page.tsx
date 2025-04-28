@@ -1,97 +1,124 @@
-'use client';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { ChevronLeft } from 'lucide-react';
-import Image from 'next/image';
-import { Request } from '@/lib/types';
-import { Badge } from '@/components/ui/badge';
-import { Navbar } from '@/components/navbar';
+"use client";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { use, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { Ticket } from "../../../lib/types/tickets/ticket";
+import ticketsService from "../../../services/tickets-service";
+import { cn } from "../../../lib/utils";
+import { Icon } from "@iconify/react";
+import { AspectRatio } from "../../../components/ui/aspect-ratio";
+import Spinner from "../../../components/spinner";
+import { useAuth } from "../../../context/auth-context";
 
-export default function RequestDetailPage({ params }: { params: { id: string } }) {
+export default function RequestDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const router = useRouter();
-  
-  const request: Request = {
-    id: params.id,
-    status: 'На рассмотрении',
-    title: 'Яма на улице Кулаковского',
-    problemType: 'Дорожные работы',
-    problemDescription: 'Яма',
-    address: 'ул. Кулаковского',
-    comment: 'На улице Кулаковского находится она прямо перед поворотом.',
-    photos: ['/pit.jpg', '/karta.jpg'],
-    date: '28.04.2025'
+  const { isLoading: isUserLoading, user } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [ticket, setTicket] = useState<Ticket | null>(null);
+  const bgBadgeColor = useMemo(
+    () => (ticket ? ticketsService.statusToBgColorClass(ticket.status) : ""),
+    [ticket]
+  );
+  const badgeColor = useMemo(
+    () => (ticket ? ticketsService.statusToColorClass(ticket.status) : ""),
+    [ticket]
+  );
+
+  const fetchTicket = async () => {
+    try {
+      if (user) {
+        setIsLoading(true);
+        const { id } = await params;
+        const ticketResponse = await ticketsService.getTicketDetails(
+          Number(id)
+        );
+        setTicket(ticketResponse);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
-  const statusColors = {
-    'На рассмотрении': 'bg-yellow-100 text-yellow-800',
-    'Отказано': 'bg-red-100 text-red-800',
-    'Работы завершены': 'bg-green-100 text-green-800',
-  };
+
+  useEffect(() => {
+    fetchTicket();
+  }, [user]);
+
   return (
-    <div className="pb-16">
-      <div className="p-4">
-        <Button 
-          variant="ghost" 
-          size="sm" 
+    <>
+      <div className="border-b mb-4">
+        <button
           onClick={() => router.back()}
-          className="mb-4 text-xl font-bold"
+          className="m-4 text-xl font-bold flex items-center cursor-pointer"
         >
           <ChevronLeft className="text-xl font-bold" />
-          Заявка
-        </Button>
-        
-        <div className="flex justify-between items-center mb-3">
-          <Badge className={`${statusColors[request.status]} capitalize`}>
-            {request.status}
-          </Badge>
-          <span className="text-sm text-gray-500">{request.date}</span>
+          <h1>Заявка</h1>
+        </button>
+      </div>
+      {isLoading || isUserLoading ? (
+        <div className="flex h-screen w-full">
+          <Spinner className="m-auto" />
         </div>
+      ) : !user ? (
+        <div className="flex h-screen w-full">
+          <h1 className="m-auto">Вы не авторизованы</h1>
+        </div>
+      ) : !ticket ? (
+        <div className="flex h-screen w-full">
+          <h1 className="m-auto">Не удалось загрузить заявку</h1>
+        </div>
+      ) : (
+        <div>
+          <div className="px-4 rounded-lg mb-4">
+            <div className="flex justify-between items-center mb-3">
+              <Badge className={cn(bgBadgeColor, "p-1 pr-3 text-foreground")}>
+                <div className={cn(badgeColor, "h-4 w-4 rounded-full")} />
+                <span className="font-semibold">
+                  {ticketsService.statusToString(ticket.status)}
+                </span>
+              </Badge>
+              <span className="text-sm text-gray-500">
+                {new Date(ticket.createdAt).toLocaleDateString()}
+              </span>
+            </div>
 
-        <h1 className="text-xl font-bold">{request.title}</h1>
+            <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
-        <div className="">
-          <div className="flex items-start">
-            <div className='flex'>
-              <p className="font-medium">{request.problemType}</p>
-              <span className="text-black-500 mr-2 ml-2">→</span>
-              <p className="text-black-600 ">{request.problemDescription}</p>
+            <div className="text-muted-foreground">
+              <div className="flex items-center space-x-1">
+                <p>{ticket.type.category.title}</p>
+                <Icon icon={"solar:arrow-right-linear"} className="" />
+                <p>{ticket.type.title}</p>
+              </div>
+              <p>{ticket.address}</p>
+            </div>
+
+            <div className="pt-2">
+              <p>{ticket.description}</p>
             </div>
           </div>
-        </div>
 
-        <div className="">
-          <p className="text-black-600 mb-2">{request.address}</p>
-        </div>
-
-        <div className="mb-6">
-          <div className="relative h-64 w-full bg-gray-100 rounded-lg overflow-hidden mb-2">
-            <Image
-              src={request.photos[0]}
-              alt="Фото заявки"
-              fill
-              className="object-cover"
+          {
+            // TODO: Add real images
+          }
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={
+                "https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQ2ZJHCqvbwrYmln1iiTIkTJwC0atIVCccya2ucLRQCQByn_j7WBRha0auTDkt1I-SI-oy7gcEN63c6snfkcaXLqQ"
+              }
+              alt={`Фото заявки: ${ticket.title}`}
+              className="object-cover w-full h-full"
             />
-          </div>
-          <div className="flex gap-2 overflow-x-auto py-2">
-            {request.photos.map((photo, index) => (
-              <div key={index} className="flex-shrink-0 relative h-16 w-16 rounded-md overflow-hidden border">
-                <Image
-                  src={photo}
-                  alt={`Фото ${index + 1}`}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            ))}
-          </div>
-          {request.comment && (
-          <div className="mt-2">
-            <p className="font-medium">Комментарий</p>
-            <p className="text-gray-600">{request.comment}</p>
-          </div>
-        )}
+          </AspectRatio>
         </div>
       </div>
-      <Navbar />
     </div>
   );
 }

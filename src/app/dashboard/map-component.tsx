@@ -119,7 +119,9 @@ const MapComponent = () => {
               </small>
             </div>
             <Button asChild variant={"ghost"} className="cursor-pointer">
-              <Link href={"/requests/create"}>
+              <Link
+                href={`/requests/create?address=${street}&latitude=${position[0]}&longitude=${position[1]}`}
+              >
                 <Icon
                   className="text-foreground"
                   icon={"solar:document-text-bold"}
