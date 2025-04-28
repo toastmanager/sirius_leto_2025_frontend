@@ -5,7 +5,7 @@ import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import { Request } from '@/lib/types';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Navbar } from '@/components/navbar';
 
 export default function RequestDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -91,6 +91,7 @@ export default function RequestDetailPage({ params }: { params: { id: string } }
         )}
         </div>
       </div>
+      <Navbar />
     </div>
   );
 }
