@@ -1,7 +1,6 @@
 import { NewsCard } from "@/components/news-card";
 import { Navbar } from '@/components/navbar';
 
-
 export default function NewsPage() {
   const newsItems = [
     {
@@ -11,6 +10,7 @@ export default function NewsPage() {
       subcategory: "яма",
       description: "Мы очень старались и 5 лет делали эту яму",
       date: "19.04.2025",
+      imageUrl: "/pit.jpg",
     },
     {
       id: "2",
@@ -19,17 +19,20 @@ export default function NewsPage() {
       subcategory: "яма",
       description: "Мы очень старались и 5 лет делали эту яму",
       date: "18.04.2025",
+      imageUrl: "/pit.jpg",
     },
   ];
 
   return (
-    <div className="max-w-md mx-auto" style={{ width: "412px", height: "917px" }}>
+    <div className="w-full max-w-md mx-auto bg-white" style={{ minHeight: "917px" }}>
       <Navbar />
-      <div className="p-4">
-        <h1 className="text-2xl font-bold mb-6">Новости</h1>
-        {newsItems.map((item) => (
-          <NewsCard key={item.id} {...item} />
-        ))}
+      <div className="w-full">
+        <h1 className="text-2xl font-bold p-4">Новости</h1>
+        <div className="w-full">
+          {newsItems.map((item) => (
+            <NewsCard key={item.id} {...item} />
+          ))}
+        </div>
       </div>
     </div>
   );
