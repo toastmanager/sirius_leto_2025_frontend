@@ -8,6 +8,7 @@ interface NewsCardProps {
   subcategory: string;
   description: string;
   date: string;
+  imageUrl: string;
 }
 
 export const NewsCard = ({
@@ -17,31 +18,27 @@ export const NewsCard = ({
   subcategory,
   description,
   date,
+  imageUrl,
 }: NewsCardProps) => {
   return (
-    <Link href={`/news/${id}`} className="block mb-6">
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <div className="relative h-48 w-full">
-          <Image
-            src="/pit.jpg"
-            alt={title}
-            fill
-            className="object-cover"
-          />
-        </div>
-        
-        <div className="p-4">
-          <div className="flex justify-between items-start">
-            <div>
-              <h3 className="font-bold text-lg">{title}</h3>
-              <p className="text-gray-500 text-sm">
-                {category} → {subcategory}
-              </p>
-            </div>
-          </div>
-          <p className="mt-2 text-gray-700">{description}</p>
-          <span className="text-gray-400 text-xs">{date}</span>
-        </div>
+    <Link href={`/news/${id}`} className="block w-full border-b border-gray-200 pb-4 mb-4 last:border-0">
+      <div className="w-full h-48 relative mb-3">
+        <Image
+          src={imageUrl}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="100vw"
+        />
+      </div>
+      
+      <div className="w-full px-2">
+        <h3 className="font-bold text-lg">{title}</h3>
+        <p className="text-gray-500 text-sm mb-2">
+          {category} → {subcategory}
+        </p>
+        <p className="text-gray-700 mb-1">{description}</p>
+        <p className="text-gray-400 text-sm">{date}</p>
       </div>
     </Link>
   );
