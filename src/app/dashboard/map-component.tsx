@@ -1,7 +1,7 @@
 "use client";
 
 import { LatLngTuple } from "leaflet";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   MapContainer,
   Marker,
@@ -17,6 +17,7 @@ import Link from "next/link";
 const MapComponent = () => {
   const [street, setStreet] = useState("");
   const [position, setPosition] = useState<LatLngTuple>([62.016754, 129.70408]);
+  const [locationLoadAttempted, setLocationLoadAttempted] = useState(false);
 
   const markerRef = useRef<L.Marker>(null);
 
@@ -36,11 +37,10 @@ const MapComponent = () => {
   }
 
   const LocationFinder = () => {
-    const [attempted, setAttempted] = useState(false);
     const map = useMap();
 
     useEffect(() => {
-      if (!attempted) {
+      if (!locationLoadAttempted) {
         map.locate({
           setView: false,
           enableHighAccuracy: true,
@@ -49,14 +49,14 @@ const MapComponent = () => {
         });
       }
 
-      setAttempted(true);
-    }, [map, attempted]);
+      setLocationLoadAttempted(true);
+    }, [map, locationLoadAttempted]);
 
     useMapEvents({
       locationfound: ({ latlng }) => {
-        if (!attempted) {
+        if (!locationLoadAttempted) {
           map.flyTo(latlng, 17);
-          setAttempted(true);
+          setLocationLoadAttempted(true);
           setPosition([latlng.lat, latlng.lng]);
         }
       },
