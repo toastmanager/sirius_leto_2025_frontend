@@ -27,7 +27,7 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
             </span>
           </div>
 
-          <h6 className="font-semibold text-lg">{ticket.title}</h6>
+          <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
           <div className="">
             <div className="flex items-start">
