@@ -7,11 +7,10 @@ export default async function NewsPage() {
 
   return (
     <div
-      className="w-full max-w-md mx-auto bg-white"
+      className="w-full max-w-md mx-auto bg-white relative"
       style={{ minHeight: "917px" }}
     >
-      <Navbar />
-      <div className="w-full">
+      <div className="w-full absolute top-0">
         <h1 className="text-2xl font-bold p-4">Новости</h1>
         <div className="w-full">
           {articles.map((article) => (
@@ -19,6 +18,7 @@ export default async function NewsPage() {
           ))}
         </div>
       </div>
+      <Navbar className="bottom-0" />
     </div>
   );
 }
