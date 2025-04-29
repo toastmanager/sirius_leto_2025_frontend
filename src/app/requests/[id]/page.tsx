@@ -91,7 +91,7 @@ export default function RequestDetailPage({
             <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
             <div className="text-muted-foreground">
-              <div className="flex items-center space-x-1">
+              <div className="flex items-center flex-wrap space-x-1">
                 <p>{ticket.type.category.title}</p>
                 <Icon icon={"solar:arrow-right-linear"} className="" />
                 <p>{ticket.type.title}</p>
