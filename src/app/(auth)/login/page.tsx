@@ -16,7 +16,7 @@ export default function Login() {
   });
 
   return (
-    <div className="flex flex-col min-h-[917px] w-[412px] mx-auto bg-white p-6">
+    <div className="flex flex-col h-full max-w-[412px] mx-auto bg-white p-6">
       <div className="flex items-center mb-6">
         <button
           onClick={() => router.back()}

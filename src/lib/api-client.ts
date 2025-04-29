@@ -10,7 +10,7 @@ import authService from "../services/auth-service";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 1000,
+  timeout: 10000,
 });
 
 api.interceptors.request.use(

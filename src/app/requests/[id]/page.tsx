@@ -104,13 +104,15 @@ export default function RequestDetailPage({
             </div>
           </div>
 
-          <AspectRatio ratio={16 / 9}>
-            <img
-              src={ticket.image}
-              alt={`Фото заявки: ${ticket.title}`}
-              className="object-cover w-full h-full"
-            />
-          </AspectRatio>
+          {ticket.image && (
+            <AspectRatio ratio={16 / 9}>
+              <img
+                src={ticket.image}
+                alt={`Фото заявки: ${ticket.title}`}
+                className="object-cover w-full h-full"
+              />
+            </AspectRatio>
+          )}
         </div>
       )}
     </>

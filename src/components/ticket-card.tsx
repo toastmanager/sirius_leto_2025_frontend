@@ -30,25 +30,24 @@ export function TicketCard({ ticket }: { ticket: Ticket }) {
           <h6 className="font-semibold text-xl">{ticket.title}</h6>
 
           <div className="">
-            <div className="flex items-center space-x-1">
+            <div className="flex items-center flex-wrap space-x-1">
               <p>{ticket.type.category.title}</p>
               <Icon icon={"solar:arrow-right-linear"} className="" />
               <p>{ticket.type.title}</p>
             </div>
-            <p>{ticket.address}</p>
+            <p className="text-sm mt-0.5">{ticket.address}</p>
           </div>
         </div>
 
-        {
-          // TODO: Add real images
-        }
-        <AspectRatio ratio={16 / 9}>
-          <img
-            src={ticket.image}
-            alt={`Фото заявки: ${ticket.title}`}
-            className="object-cover w-full h-full"
-          />
-        </AspectRatio>
+        {ticket.image && (
+          <AspectRatio ratio={16 / 9}>
+            <img
+              src={ticket.image}
+              alt={`Фото заявки: ${ticket.title}`}
+              className="object-cover w-full h-full"
+            />
+          </AspectRatio>
+        )}
       </div>
     </Link>
   );

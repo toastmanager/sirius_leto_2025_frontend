@@ -150,7 +150,7 @@ const CreateTicketPage = () => {
           <Input
             required
             type="number"
-            step="0.0001"
+            step="0.0000000000001"
             min={-180}
             max={180}
             placeholder="129.705278"
@@ -165,7 +165,7 @@ const CreateTicketPage = () => {
           <Input
             required
             type="number"
-            step="0.000001"
+            step="0.0000000000001"
             min={-90}
             max={90}
             placeholder="62.016720"

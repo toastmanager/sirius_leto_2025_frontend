@@ -13,8 +13,9 @@ import {
 import { Icon } from "@iconify/react";
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
+import { cn } from "../../lib/utils";
 
-const MapComponent = () => {
+const MapComponent = ({ className }: { className?: string }) => {
   const [street, setStreet] = useState("");
   const [position, setPosition] = useState<LatLngTuple>([62.016754, 129.70408]);
   const [locationLoadAttempted, setLocationLoadAttempted] = useState(false);
@@ -95,7 +96,7 @@ const MapComponent = () => {
       attributionControl={false}
       zoom={20}
       scrollWheelZoom={true}
-      className="h-[calc(100vh-69px)] w-screen"
+      className={cn("h-screen w-screen", className)}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <MapEventsHandler />

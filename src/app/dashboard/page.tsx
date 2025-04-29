@@ -7,9 +7,9 @@ const Map = dynamic(() => import("./map-component"), { ssr: false });
 
 export default function Dashboard() {
   return (
-    <div className="pb-16">
-      <Map />
-      <Navbar />
+    <div className="relative">
+      <Map className="absolute z-0" />
+      <Navbar className="sticky bottom-0 z-50" />
     </div>
   );
 }

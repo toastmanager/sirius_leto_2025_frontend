@@ -41,14 +41,14 @@ export default function TicketsPage() {
           </h1>
         </div>
       ) : (
-        <>
+        <div className="pb-20">
           {ticketsList.map((ticket) => (
             <div key={ticket.id}>
               <TicketCard ticket={ticket} />
               <Separator className="my-4" />
             </div>
           ))}
-        </>
+        </div>
       )}
       <Navbar />
     </>
